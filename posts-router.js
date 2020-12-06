@@ -272,6 +272,48 @@ router.post('/api/posts/:id/comments', (req, res) => {
       });
 
 
+      ///NOTES FROM GUIDED
+
+
+      router.get("/users.:userID/post/:postID", (req, res) => {
+        users.findByPostByID(req.params.userID, req.params.postID)
+
+         .then((post) => {
+             if(post) {
+                 res.json(post)
+             } else {
+                 res.status(404).json({
+                     message: "post was not found"
+                 })
+             }
+         })
+         .catch(()=>{
+             console.log(err)
+             res.status(500).json({
+                 message: "couldn't get user post"
+             })
+         })
+    })
+
+    router.post("users/:id/posts", (req,res)=> {
+        if (!req.body.text){
+            return res.status(400).json({
+                message: "Need a text value"
+            })
+        }
+        users.addUsersPost(req.params.id, req.body)
+            .then((post)=>{
+                res.status(201).json(post)
+            })
+            .catch((err)=> {
+                console.log(err)
+                res.status(500).json({
+                    message: "could not create user post"
+                })
+            })
+    })
+
+
 
 
 
